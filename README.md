@@ -6,10 +6,9 @@
 
 # Description
 
-# Installation and Usage
 
 # Dataset
-Please access the dataset by following this [Google Drive](https://drive.google.com/drive/folders/1Qh18exb9_QpxZnagrehxV2ZvOZGSZZTB?usp=sharing).
+DeepCell's DynamicNuclearNet dataset: https://datasets.deepcell.org/ 
 
 # References
 
