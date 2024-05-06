@@ -20,7 +20,7 @@ from micro_sam.instance_segmentation import AutomaticMaskGenerator, load_instanc
 from micro_sam import instance_segmentation, inference, evaluation
 from micro_sam.evaluation.experiments import default_experiment_settings, full_experiment_settings
 from micro_sam import util
-
+from torch_em.data.datasets.dynamicnuclearnet import get_dynamicnuclearnet_loader
 
 #
 # Inference
@@ -54,10 +54,15 @@ def get_predictor(
     )
     return predictor
 
+
 def save_image(image_array, image_path):
     image = Image.fromarray(image_array)
     image.save(image_path)
-    
+
+
+import os
+import zarr
+
 def _get_deepcell_paths(input_folder, split="test"):
     """
     Retrieve paths for raw and ground truth images from the DeepCell dataset.
@@ -70,45 +75,46 @@ def _get_deepcell_paths(input_folder, split="test"):
         list, list: Lists containing paths to raw images and ground truth images respectively.
     """
     assert split in ["val", "test"]
-    output_folder = "/projectnb/rfpm/SAM_kontact/fluorescent/datasets/DynamicNuclearNet"
+
+    gt_paths = []
+    image_paths = []
 
     # Create the path to test and val folder
-    dataset_folder = os.path.join(input_folder, split)
+    output_folder = os.path.join("/projectnb/rfpm/SAM_kontact/fluorescent/datasets/DynamicNuclearNet", split)
+
+    # Path to the dataset
+    dataset_folder = os.path.join("/projectnb/rfpm/SAM_kontact/fluorescent/datasets/", split)
     
     # List all .zarr files in the dataset folder and sort them
     zarr_files = sorted([f for f in os.listdir(dataset_folder) if f.endswith(".zarr")])
-    
-    # Initialize lists to store paths to raw and ground truth images
-    image_paths = []
-    gt_paths = []
+
+    # Create ground truth and raw image folders: DynamicNuclearNet/test/gt and DynamicNuclearNet/test/image
+    gt_folder = os.path.join(output_folder, "gt") # ground truth folder
+    image_folder = os.path.join(output_folder, "image") # raw image folder
+
+    # Create the output folders if they don't exist
+    os.makedirs(gt_folder, exist_ok=True)
+    os.makedirs(image_folder, exist_ok=True)
 
     # Iterate through each .zarr file in the dataset
-    for zarr_file in zarr_files:
-        # Construct the full path to the .zarr file
-        zarr_path = os.path.join(dataset_folder, zarr_file)
-        
+    for i, zarr_file in enumerate(zarr_files):
         # Open the .zarr file
-        with zarr.open(zarr_path) as f:
+        with zarr.open(os.path.join(dataset_folder, zarr_file)) as f:
+            
             # Extract raw and ground truth data from the .zarr file
             raw_data = f['raw'][:]
             label_data = f['labels'][:]
-        
-        # Create output subfolders if they don't exist
-        output_subfolder_gt = os.path.join(output_folder, split, os.path.splitext(zarr_file)[0], "gt") # ground truth folder
-        output_subfolder_image = os.path.join(output_folder, split, os.path.splitext(zarr_file)[0], "image") # raw image folder
-        os.makedirs(output_subfolder_gt, exist_ok=True)
-        os.makedirs(output_subfolder_image, exist_ok=True)
-
-        # Save raw images inside "image" folder
-        for i, raw_image in enumerate(raw_data):
-            raw_image_path = os.path.join(output_subfolder_image, f"raw_image_{i}.png")
-            save_image(raw_image, raw_image_path)
+            
+            # Save raw images inside "image" folder
+            raw_image_path = os.path.join(image_folder, f"raw_image_{i}.png")
+            # Assuming you have a function save_image defined elsewhere
+            save_image(raw_data, raw_image_path)
             image_paths.append(raw_image_path)
-
-        # Save label images inside "gt" folder
-        for i, label_image in enumerate(label_data):
-            label_image_path = os.path.join(output_subfolder_gt, f"label_image_{i}.png")
-            save_image(label_image, label_image_path)
+        
+            # Save label images inside "gt" folder
+            label_image_path = os.path.join(gt_folder, f"label_image_{i}.png")
+            # Assuming you have a function save_image defined elsewhere
+            save_image(label_data, label_image_path)
             gt_paths.append(label_image_path)
 
     return image_paths, gt_paths
