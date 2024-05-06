@@ -17,9 +17,6 @@ For this project, DeepCell's  DynamicNuclearNet dataset is utilized (https://dat
 ## Model checkpoints
 Please follow this link to view and download checkpoints for fine-tuned models, as the files are too large to be uploaded to GitHub: https://drive.google.com/drive/folders/1VoDOdJDPmMbLNnER8N4AkV1CsxZZadAz?usp=sharing
 
-## Analysis
-Please follow this link to view the final report: https://docs.google.com/document/d/1JiB4OjLYDSHGKALGz48dsRruq-juHN4hY5hb6e_ivF0/edit?usp=sharing
-
 # References
 [1] A. Kirillov et al., “Segment Anything.” arXiv, Apr. 05, 2023. doi: 10.48550/arXiv.2304.02643.  
 [2] A. Archit et al., “Segment Anything for Microscopy.” bioRxiv, p. 2023.08.21.554208, Aug. 22, 2023. doi: 10.1101/2023.08.21.554208.  
