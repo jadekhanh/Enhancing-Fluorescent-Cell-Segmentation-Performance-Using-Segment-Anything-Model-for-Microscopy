@@ -14,7 +14,11 @@ The project aims to replicate the fine-tuning studies outlined in the micro_sam 
 For this project, DeepCell's  DynamicNuclearNet dataset is utilized (https://datasets.deepcell.org/), consisting of two subsets: one for tracking and another for segmentation [3]. Given the focus on fluorescent nuclear cell segmentation, the segmentation subset is exclusively utilized. The segmentation subset comprises over 7000 images and more than 700,000 unique annotations, divided into training, validation, and testing sets. The training set consists of 4950 images with 684,037 annotations. The validation set comprises 1417 images with 152,782 annotations, while the testing set encompasses 717 images with 76,300 annotations. All images are standardized to dimensions of 512 x 512 pixels.
 
 # Results
+## Model checkpoints
 Please follow this link to view and download checkpoints for fine-tuned models, as the files are too large to be uploaded to GitHub: https://drive.google.com/drive/folders/1VoDOdJDPmMbLNnER8N4AkV1CsxZZadAz?usp=sharing
+
+## Analysis
+Please follow this link to view the final report: https://docs.google.com/document/d/1JiB4OjLYDSHGKALGz48dsRruq-juHN4hY5hb6e_ivF0/edit?usp=sharing
 
 # References
 [1] A. Kirillov et al., “Segment Anything.” arXiv, Apr. 05, 2023. doi: 10.48550/arXiv.2304.02643.  
